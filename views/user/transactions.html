@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Transactions - Wallet App</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="user-header">
+        <div class="logo">Wallet App</div>
+        <nav>
+            <span class="user-name">Welcome, {{userName}}</span>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <main class="user-main">
+        <h1>My Recent Transactions</h1>
+        
+        <div id="transactionsList" class="transactions-list">
+            <p>Loading...</p>
+        </div>
+    </main>
+
+    <footer class="user-footer">
+        <p>&copy; 2024 Wallet App</p>
+    </footer>
+
+    <script>
+        fetch('/api/user/transactions')
+            .then(res => res.json())
+            .then(transactions => {
+                const container = document.getElementById('transactionsList');
+                
+                if (transactions.length === 0) {
+                    container.innerHTML = '<p>No transactions found.</p>';
+                    return;
+                }
+
+                const sorted = transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                let html = '<table class="transactions-table">';
+                html += '<thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead>';
+                html += '<tbody>';
+
+                sorted.forEach(t => {
+                    const amountClass = t.amount > 0 ? 'positive' : 'negative';
+                    const formattedAmount = t.amount > 0 ? `+$${t.amount.toFixed(2)}` : `-$${Math.abs(t.amount).toFixed(2)}`;
+                    
+                    html += `<tr>
+                        <td>${t.date}</td>
+                        <td>${t.description}</td>
+                        <td>${t.type}</td>
+                        <td class="${amountClass}">${formattedAmount}</td>
+                        <td><span class="status-badge status-${t.status}">${t.status}</span></td>
+                    </tr>`;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            })
+            .catch(err => {
+                document.getElementById('transactionsList').innerHTML = '<p class="error">Error loading transactions: ' + err.message + '</p>';
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Wallet App</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="logo">Wallet App - Admin</div>
+        <nav>
+            <a href="/admin/dashboard" class="active">Dashboard</a>
+            <a href="/admin/transactions">Transactions</a>
+            <a href="/logout">Logout ({{userName}})</a>
+        </nav>
+    </header>
+
+    <main class="admin-main">
+        <h1>Dashboard</h1>
+        
+        <div class="stats-cards">
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <p class="stat-value" id="totalUsers">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Transactions</h3>
+                <p class="stat-value" id="totalTransactions">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Admin Users</h3>
+                <p class="stat-value" id="adminCount">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Regular Users</h3>
+                <p class="stat-value" id="userCount">-</p>
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-wrapper">
+                <h2>Monthly Income vs Expenses</h2>
+                <canvas id="monthlyChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <h2>Users by Role</h2>
+                <canvas id="usersChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <footer class="admin-footer">
+        <p>&copy; 2024 Wallet App - Admin Panel</p>
+    </footer>
+
+    <script>
+        fetch('/api/admin/dashboard-data')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('totalUsers').textContent = data.totalUsers;
+                document.getElementById('totalTransactions').textContent = data.totalTransactions;
+                document.getElementById('adminCount').textContent = data.usersByRole.admin;
+                document.getElementById('userCount').textContent = data.usersByRole.user;
+
+                const months = Object.keys(data.monthlyData).sort();
+                const income = months.map(m => data.monthlyData[m].income);
+                const expense = months.map(m => data.monthlyData[m].expense);
+
+                new Chart(document.getElementById('monthlyChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: months,
+                        datasets: [
+                            {
+                                label: 'Income',
+                                data: income,
+                                backgroundColor: '#28a745'
+                            },
+                            {
+                                label: 'Expenses',
+                                data: expense,
+                                backgroundColor: '#dc3545'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+
+                new Chart(document.getElementById('usersChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Admin', 'User'],
+                        datasets: [{
+                            data: [data.usersByRole.admin, data.usersByRole.user],
+                            backgroundColor: ['#007bff', '#6c757d']
+                        }]
+                    },
+                    options: { responsive: true }
+                });
+            })
+            .catch(err => console.error('Error loading dashboard:', err));
+    </script>
+</body>
+</html>

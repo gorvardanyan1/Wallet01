@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions - Admin - Wallet App</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div class="logo">Wallet App - Admin</div>
+        <nav>
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/transactions" class="active">Transactions</a>
+            <a href="/logout">Logout ({{userName}})</a>
+        </nav>
+    </header>
+
+    <main class="admin-main">
+        <h1>Transactions Management</h1>
+        
+        <section class="skeleton-section">
+            <h2>TODO: Build Transaction View</h2>
+            <p>This is a skeleton page. The learner should implement:</p>
+            
+            <ul class="todo-list">
+                <li>Fetch and display all transactions from <code>/api/admin/transactions</code></li>
+                <li>Show columns: ID, User, Amount, Type, Description, Date, Status</li>
+                <li>Add a form to create new transactions (POST /api/admin/transactions)</li>
+                <li>Add filtering by user, type, or status</li>
+                <li>Add sorting functionality</li>
+            </ul>
+
+            <div class="sample-data-box">
+                <h3>Sample Response from /api/admin/transactions:</h3>
+                <pre id="sampleData">Loading sample data...</pre>
+            </div>
+        </section>
+    </main>
+
+    <footer class="admin-footer">
+        <p>&copy; 2024 Wallet App - Admin Panel</p>
+    </footer>
+
+    <script>
+        fetch('/api/admin/transactions')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('sampleData').textContent = JSON.stringify(data.slice(0, 2), null, 2);
+            })
+            .catch(err => {
+                document.getElementById('sampleData').textContent = 'Error: ' + err.message;
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "name": "Admin",
+    "lastName": "User",
+    "year": 1985,
+    "login": "admin",
+    "hashedPassword": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "admin"
+  },
+  {
+    "id": "2",
+    "name": "John",
+    "lastName": "Smith",
+    "year": 1990,
+    "login": "john",
+    "hashedPassword": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "user"
+  },
+  {
+    "id": "3",
+    "name": "Sarah",
+    "lastName": "Johnson",
+    "year": 1988,
+    "login": "sarah",
+    "hashedPassword": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "user"
+  },
+  {
+    "id": "4",
+    "name": "Mike",
+    "lastName": "Williams",
+    "year": 1995,
+    "login": "mike",
+    "hashedPassword": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "user"
+  }
+]
